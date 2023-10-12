@@ -9,7 +9,6 @@ export default defineComponent({
       address: '',
       service: '',
       services: [],
-      serviceCounts: [1],
     };
   },
   setup() {
@@ -24,6 +23,10 @@ export default defineComponent({
       }
 
       salonStore.addNewSalon(newSalon);
+
+      const pattern = /\w+/ig;
+
+      this.services = this.service.match(pattern);
 
       for (const s of this.services) {
         const newService = {
@@ -47,11 +50,6 @@ export default defineComponent({
   methods: {
     closeModal() {
       this.$emit('close');
-    },
-    addServiceInput() {
-      this.services.push(this.service);
-      this.service = '';
-      this.serviceCounts.push(1);
     }
   }
 });
@@ -69,14 +67,12 @@ export default defineComponent({
       placeholder="Address"
       v-model="address"
     >
-    <input
-      v-for="count of serviceCounts"
-      type="text"
-      placeholder="Service"
+    <textarea
+      placeholder="Services"
       v-model="service"
-    >
-    <button @click="addServiceInput">Add service</button>
-    <button @click="addSalon">Add new salon</button>
+    ></textarea>
+
+    <button @click="addSalon" class="btn btn-success">Add new salon</button>
   </div>
 </template>
 

@@ -45,23 +45,49 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    <SalonDropdown
-      :salons="salons"
-      :selectedSalon="selectedSalon"
-      @select="onSalonChange"
-    />
+  <div class="home">
+    <div class="home-selects">
+      <SalonDropdown
+        :salons="salons"
+        :selectedSalon="selectedSalon"
+        @select="onSalonChange"
+      />
 
-    <ServiceDropdown
-      :services="services"
-      :selectedSalon="selectedSalon"
-      :selectedService="selectedService"
-      @choose="onServiceChange"
-    />
+      <ServiceDropdown
+        :services="services"
+        :selectedSalon="selectedSalon"
+        :selectedService="selectedService"
+        @choose="onServiceChange"
+      />
 
-    <button @click="onNextClick" :disabled="!isNextButtonEnabled">
-      Next
-    </button>
-    <router-link to="/salons">Salons</router-link>
+      <div class="btn-container">
+        <button @click="onNextClick" :disabled="!isNextButtonEnabled" class="btn btn-danger">
+          Next
+        </button>
+      </div>
+    </div>
+
+    <div class="home-info">
+      <h2>BeautyBooking - description</h2>
+      BeautyBooking - your reliable guide to the world of beauty and self-care salons. 
+      Discover a variety of salons in your city, explore the list of services offered, and instantly book appointments at your convenience.
+      A delightful blend of convenience and beauty - BeautyBooking
+    </div>
   </div>
 </template>
+
+<style>
+.home {
+  display: flex;
+  justify-content: space-between;
+}
+.home-selects {
+  width: 45%;
+}
+.home-info {
+  width: 45%;
+}
+.btn-container {
+  margin-top: 10px;
+}
+</style>

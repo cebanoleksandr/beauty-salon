@@ -74,10 +74,29 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>
-    <Calendar :date="salonStore.selectedDay" @change="changeDate" />
-    <TimeSlots v-if="salonStore.selectedDay" @select="show" />
-    <Modal v-if="isModalVisible" @close="hide" />
-    <BlackOut v-if="isModalVisible" />
+  <div class="book-container">
+    <div class="book-calendar">
+      <Calendar :date="salonStore.selectedDay" @change="changeDate" />
+    </div>
+
+    <div class="book-timeslots">
+      <TimeSlots v-if="salonStore.selectedDay" @select="show" />
+    </div>
   </div>
+
+  <Modal v-if="isModalVisible" @close="hide" />
+  <BlackOut v-if="isModalVisible" />
 </template>
+
+<style>
+.book-container {
+  display: flex;
+  justify-content: space-between;
+}
+.book-calendar {
+  width: 35%;
+}
+.book-timeslots {
+  width: 60%;
+}
+</style>

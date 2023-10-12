@@ -73,7 +73,11 @@ export const useSalonStore = defineStore('salon', {
       }
     },
     removeService(serviceId) {
-      this.services = this.services.filter(s => s.id !== +serviceId);
+      for (let i = 0; i < this.services.length; i++) {
+        if (this.services[i].id === serviceId) {
+          this.services.splice(i, 1);
+        }
+      }
     }
   },
 });

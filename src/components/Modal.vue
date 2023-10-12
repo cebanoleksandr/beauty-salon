@@ -44,13 +44,21 @@ export default defineComponent({
     <div v-if="!isSinedUp">
       <input
         type="text"
+        class="mb"
         placeholder="Name"
         v-model="name"
       >
 
-      <input type="tel" v-model="phone">
+      <input
+        type="text" 
+        class="mb"
+        placeholder="Phone number"
+        v-model="phone"
+      >
 
-      <button @click="signUp">Sign up</button>
+      <button @click="signUp" class="btn btn-dark">
+        Sign up
+      </button>
     </div>
 
     <div v-else>
@@ -58,7 +66,7 @@ export default defineComponent({
         You are made an appointment for {{ selectedService }} at the {{ selectedSalon }} at {{ selectedDay }} {{ selectedTime }}
       </p>
 
-      <button @click="closeModal">OK</button>
+      <button @click="closeModal" class="btn btn-success mt">OK</button>
     </div>
   </div>
 </template>
@@ -70,7 +78,7 @@ export default defineComponent({
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  color: var(--dark-color);
   z-index: 100;
   top: 40%;
   left: 30%;

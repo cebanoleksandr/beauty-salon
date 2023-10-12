@@ -78,8 +78,7 @@ export default defineComponent({
     </tbody>
   </table>
 
-  <button @click="show">Add salon</button>
-  <router-link to="/">Home</router-link>
+  <button @click="show" class="btn btn-light mt">Add salon</button>
 
   <AddSalonModal v-if="isModalVisible" @close="hide" />
   <BlackOut v-if="isModalVisible" />

@@ -1,5 +1,6 @@
 <script>
 import { defineComponent, ref, computed } from 'vue';
+import { useSalonStore } from '../pinia/pinia.js';
 
 export default defineComponent({
   setup() {

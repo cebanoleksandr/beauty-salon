@@ -44,9 +44,13 @@ export default {
 <template>
   <div>
     <div v-if="timeSlotsData.length > 0">
-      <div v-for="time of timeSlotsData">
+      <div v-for="time of timeSlotsData" class="time-slot">
         {{ time }}
-        <button @click="selectTime(salonStore, time)" :disabled="busyTimes.includes(time)">
+        <button
+          @click="selectTime(salonStore, time)"
+          :disabled="busyTimes.includes(time)"
+          class="btn btn-success"
+        >
           Make an appointment
         </button>
       </div>
@@ -55,7 +59,21 @@ export default {
       <p>No available time slots.</p>
     </div>
   </div>
-  <router-link to="/appointments">Appointments</router-link>
 </template>
 
-<style></style>
+<style>
+.time-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-radius: 10px;
+  color: var(--dark-color);
+  background-color: var(--light-color);
+  margin-bottom: 10px;
+  transition: all .3s;
+}
+.time-slot:hover {
+  transform: scale(1.1);
+}
+</style>
