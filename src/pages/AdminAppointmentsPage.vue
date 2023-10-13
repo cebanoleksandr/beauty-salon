@@ -7,12 +7,12 @@ export default defineComponent({
     const salonStore = useSalonStore();
     const salons = salonStore.salons;
     const services = salonStore.services;
-    let type = ''; // service, salon, data
-    let order = 'asc'; // asc, desc
 
     const busyTimes = salonStore.getBusyTimes;
 
-    const appointments = computed(() => {
+    const appointments = ref([]);
+
+    const updateAppointments = () => {
       let events = [];
 
       for (const key in salonStore.busyTimes) {
@@ -30,17 +30,26 @@ export default defineComponent({
         }
       }
 
+      appointments.value = events;
+    };
+
+    const reverseAppointments = () => {
+      appointments.value = appointments.value.reverse();
+      console.log(appointments.value);
+    };
+
+    const sortAppointments = (type) => {
       switch (type) {
         case 'service':
-          events = events.sort((a, b) => a.serviceName.localeCompare(b.serviceName));
+          appointments.value = appointments.value.sort((a, b) => a.serviceName.localeCompare(b.serviceName));
           break;
 
         case 'salon':
-          events = events.sort((a, b) => a.serviceName.localeCompare(b.serviceName));
+          appointments.value = appointments.value.sort((a, b) => a.salonName.localeCompare(b.salonName));
           break;
 
-        case 'data':
-          events = events.sort((a, b) => {
+        case 'date':
+          appointments.value = appointments.value.sort((a, b) => {
             const first = +(new Date([a.date[1], a.date[0], a.date[2]].join('-')));
             const second = +(new Date([b.date[1], b.date[0], b.date[2]].join('-')));
 
@@ -49,22 +58,18 @@ export default defineComponent({
           break;
       
         default:
-          events = events;
+          appointments.value = appointments.value;
           break;
       }
+    }
 
-      if (!!type && order === 'desc') {
-        events = events.reverse();
-      }
-
-      return events;
-    });
+    updateAppointments();
 
     return {
       appointments,
       busyTimes,
-      type,
-      order,
+      reverseAppointments,
+      sortAppointments,
     };
   }
 })
@@ -94,12 +99,10 @@ export default defineComponent({
       </tr>
     </tbody>
   </table>
-
-  <!-- <button @click="type = 'service'">Service</button>
-  <button @click="type = 'salon'">Salon</button>
-  <button @click="type = 'date'">Date</button>
-  <button @click="order = 'desc'">Desc</button>
-  <button @click="order = 'asc'">Asc</button> -->
+  <button @click="reverseAppointments">Reverse</button>
+  <button @click="sortAppointments('salon')">Salon</button>
+  <button @click="sortAppointments('service')">Service</button>
+  <button @click="sortAppointments('date')">Date</button>
 </template>
 
 <style>
