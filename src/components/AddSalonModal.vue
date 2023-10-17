@@ -8,6 +8,9 @@ export default defineComponent({
       name: '',
       address: '',
       service: '',
+      isNameError: false,
+      isAddressError: false,
+      isServicesError: false,
       services: [],
     };
   },
@@ -15,6 +18,22 @@ export default defineComponent({
     const salonStore = useSalonStore();
 
     function addSalon() {
+      if (!this.name.trim()) {
+        this.isNameError = true;
+      }
+
+      if (!this.address.trim()) {
+        this.isAddressError = true;
+      }
+
+      if (!this.service.trim()) {
+        this.isServicesError = true;
+      }
+
+      if (!this.name.trim() || !this.address.trim() || !this.service.trim()) {
+        return;
+      }
+
       const newSalonId = +(new Date());
       const newSalon = {
         id: newSalonId,
@@ -50,7 +69,16 @@ export default defineComponent({
   methods: {
     closeModal() {
       this.$emit('close');
-    }
+    },
+    blurName() {
+      this.isNameError = !this.name.trim();
+    },
+    blurAddress() {
+      this.isAddressError = !this.address.trim();
+    },
+    blurServices() {
+      this.isServicesError = !this.service.trim();
+    },
   }
 });
 </script>
@@ -59,20 +87,35 @@ export default defineComponent({
   <div class="modal">
     <input
       type="text"
+      :class="{'input-error': isNameError}"
       placeholder="Salon name"
       v-model="name"
+      @blur="blurName"
     >
     <input
       type="text"
+      :class="{'input-error': isAddressError}"
       placeholder="Address"
       v-model="address"
+      @blur="blurAddress"
     >
     <textarea
       placeholder="Services"
+      :class="{'textarea-error': isServicesError}"
       v-model="service"
+      @blur="blurServices"
     ></textarea>
 
-    <button @click="addSalon" class="btn btn-success">Add new salon</button>
+    <div>
+      <small v-if="isNameError" class="text-danger">Name is require.</small>
+      <small v-if="isAddressError" class="text-danger"> Address is require.</small>
+      <small v-if="isServicesError" class="text-danger"> Services is require.</small>
+    </div>
+
+    <div>
+      <button @click="addSalon" class="btn btn-success">Add new salon</button>
+      <button @click="closeModal" class="btn btn-danger">Close</button>
+    </div>
   </div>
 </template>
 

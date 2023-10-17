@@ -50,6 +50,7 @@ export const useSalonStore = defineStore('salon', {
       }
 
       this.busyTimes[key].push(timeSlot);
+      this.resetSelection();
     },
     resetSelection() {
       this.selectedSalon = null;

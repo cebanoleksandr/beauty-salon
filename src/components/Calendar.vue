@@ -8,8 +8,15 @@ export default {
   },
   data() {
     return {
-      selectedDate: this.date,
+      selectedDate: new Date(),
     };
+  },
+  computed: {
+    minDate() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return today;
+    }
   },
   emits: ['change'],
   props: {
@@ -17,6 +24,10 @@ export default {
   },
   methods: {
     changeDate() {
+      if (this.selectedDate < new Date() + 86400000) {
+        return;
+      }
+
       this.$emit('change', this.selectedDate);
     },
   }
@@ -24,5 +35,9 @@ export default {
 </script>
 
 <template>
-  <DatePicker v-model="selectedDate" @click="changeDate" />
+  <DatePicker
+    v-model="selectedDate"
+    @click="changeDate"
+    :min-date="minDate"
+  />
 </template>

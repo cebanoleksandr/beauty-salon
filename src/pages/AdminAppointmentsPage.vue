@@ -35,7 +35,6 @@ export default defineComponent({
 
     const reverseAppointments = () => {
       appointments.value = appointments.value.reverse();
-      console.log(appointments.value);
     };
 
     const sortAppointments = (type) => {
@@ -50,8 +49,12 @@ export default defineComponent({
 
         case 'date':
           appointments.value = appointments.value.sort((a, b) => {
-            const first = +(new Date([a.date[1], a.date[0], a.date[2]].join('-')));
-            const second = +(new Date([b.date[1], b.date[0], b.date[2]].join('-')));
+            const aTime = a.time.split(' - ')[0];
+            const bTime = b.time.split(' - ')[0];
+            const aDate = [a.data[1], a.data[0], a.data[2]].join('-');
+            const bDate = [b.data[1], b.data[0], b.data[2]].join('-');
+            const first = +(new Date(aDate + ', ' + aTime));
+            const second = +(new Date(bDate + ', ' + bTime));
 
             return first - second;
           });
@@ -78,31 +81,38 @@ export default defineComponent({
 <template>
   <h1>Appointments</h1>
 
-  <table>
-    <thead>
-      <tr>
-        <th>№</th>
-        <th>Service</th>
-        <th>Salon</th>
-        <th>Data</th>
-        <th>Time</th>
-      </tr>
-    </thead>
+  <div v-if="!!appointments.length">
+    <table>
+      <thead>
+        <tr>
+          <th>№</th>
+          <th>Service</th>
+          <th>Salon</th>
+          <th>Data</th>
+          <th>Time</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr v-for="appointment, index of appointments">
-        <td>{{ index + 1 }}</td>
-        <td>{{ appointment.serviceName }}</td>
-        <td>{{ appointment.salonName }}</td>
-        <td>{{ appointment.data.join('-') }}</td>
-        <td>{{ appointment.time }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <button @click="reverseAppointments">Reverse</button>
-  <button @click="sortAppointments('salon')">Salon</button>
-  <button @click="sortAppointments('service')">Service</button>
-  <button @click="sortAppointments('date')">Date</button>
+      <tbody>
+        <tr v-for="appointment, index of appointments">
+          <td>{{ index + 1 }}</td>
+          <td>{{ appointment.serviceName }}</td>
+          <td>{{ appointment.salonName }}</td>
+          <td>{{ appointment.data.join('-') }}</td>
+          <td>{{ appointment.time }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button @click="reverseAppointments">Reverse</button>
+    <button @click="sortAppointments('salon')">Salon</button>
+    <button @click="sortAppointments('service')">Service</button>
+    <button @click="sortAppointments('date')">Date</button>
+  </div>
+  
+  <p v-else>
+    There are no appointments yet. Please, sign up for some services!
+  </p>
 </template>
 
 <style>

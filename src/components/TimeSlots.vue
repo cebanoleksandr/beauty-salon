@@ -26,16 +26,7 @@ export default {
   },
   methods: {
     selectTime(salonStore, timeSlot) {
-      salonStore.setTime(timeSlot);
-
-      salonStore.setBusyTime({ 
-        salonId: salonStore.selectedSalon,
-        serviceId: salonStore.selectedService,
-        day: salonStore.selectedDay,
-        timeSlot,
-      });
-
-      this.$emit('select');
+      this.$emit('select', { salonStore, timeSlot });
     }
   }
 }

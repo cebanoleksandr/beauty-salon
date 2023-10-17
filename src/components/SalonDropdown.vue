@@ -11,6 +11,7 @@ export default {
   },
   methods: {
     selectSalon(event) {
+      this.selectedSalon = event.target.value;
       this.$emit('select', event.target.value);
     },
   }
@@ -20,7 +21,8 @@ export default {
 <template>
   <div>
     <label>Select Salon:</label>
-    <select v-model="selectedSalon" @input="selectSalon">
+    <select @change="selectSalon">
+      <option :value="null">Select a salon</option>
       <option v-for="salon in salons" :value="salon.id">{{ salon.name }}</option>
     </select>
   </div>

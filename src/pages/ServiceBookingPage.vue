@@ -16,14 +16,30 @@ export default defineComponent({
   data() {
     return {
       isModalVisible: false,
+      time: null,
+      salonStore: null,
+      busyTime: null,
     };
   },
   methods: {
-    show() {
+    show({ salonStore, timeSlot }) {
+      this.time = timeSlot;
+      this.salonStore = salonStore;
+      this.busyTime = { 
+        salonId: salonStore.selectedSalon,
+        serviceId: salonStore.selectedService,
+        day: salonStore.selectedDay,
+        timeSlot,
+      };
+
       this.isModalVisible = true;
     },
     hide() {
       this.isModalVisible = false;
+    },
+    signUp() {
+      this.salonStore.setTime(this.time);
+      this.salonStore.setBusyTime(this.busyTime);
     },
   },
   setup() {
@@ -76,7 +92,7 @@ export default defineComponent({
 <template>
   <div class="book-container">
     <div class="book-calendar">
-      <Calendar :date="salonStore.selectedDay" @change="changeDate" />
+      <Calendar @change="changeDate" />
     </div>
 
     <div class="book-timeslots">
@@ -84,7 +100,12 @@ export default defineComponent({
     </div>
   </div>
 
-  <Modal v-if="isModalVisible" @close="hide" />
+  <Modal
+    v-if="isModalVisible"
+    @close="hide"
+    @signUp="signUp"
+  />
+  
   <BlackOut v-if="isModalVisible" />
 </template>
 

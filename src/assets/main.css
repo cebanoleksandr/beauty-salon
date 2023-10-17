@@ -195,6 +195,14 @@ textarea {
   border: 1px solid #ccc;
 }
 
+textarea.textarea-error {
+  border: 1px solid var(--danger-color);
+}
+
+input.input-error {
+  border: 1px solid var(--danger-color);
+}
+
 input[type='submit'],
 button {
   font: inherit;

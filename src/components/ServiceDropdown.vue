@@ -27,7 +27,8 @@ export default {
 <template>
   <div>
     <label>Select Service:</label>
-    <select v-model="salon" @input="selectService">
+    <select @change="selectService">
+      <option :value="null">Select a service</option>
       <option v-for="service in filteredServices" :value="service.id">
         {{ service.name }}
       </option>

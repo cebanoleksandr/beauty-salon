@@ -8,6 +8,8 @@ export default defineComponent({
       isSinedUp: false,
       name: '',
       phone: '',
+      isNameError: false,
+      isPhoneError: false,
     };
   },
   setup() {
@@ -27,13 +29,32 @@ export default defineComponent({
       selectedTime,
     };
   },
-  emits: ['close'],
+  emits: ['close', 'signUp'],
   methods: {
     closeModal() {
       this.$emit('close');
     },
     signUp() {
+      if (!this.name) {
+        this.isNameError = true;
+      }
+
+      if (!this.name) {
+        this.isPhoneError = true;
+      }
+
+      if (!this.name || !this.phone) {
+        return;
+      }
+
       this.isSinedUp = true;
+      this.$emit('signUp');
+    },
+    blurName() {
+      this.isNameError = !this.name;
+    },
+    blurPhone() {
+      this.isPhoneError = !this.phone;
     }
   }
 });
@@ -45,20 +66,29 @@ export default defineComponent({
       <input
         type="text"
         class="mb"
+        :class="{'input-error': isNameError}"
         placeholder="Name"
         v-model="name"
+        @blur="blurName"
       >
 
       <input
-        type="text" 
-        class="mb"
+        type="text"
+        :class="{'input-error': isPhoneError}"
         placeholder="Phone number"
         v-model="phone"
+        @blur="blurPhone"
       >
+
+      <div class="notification">
+        <small v-if="isNameError" class="text-danger">Name is require.</small>
+        <small v-if="isPhoneError" class="text-danger"> Phone is require.</small>
+      </div>
 
       <button @click="signUp" class="btn btn-dark">
         Sign up
       </button>
+      <button class="btn btn-danger" @click="closeModal">Close</button>
     </div>
 
     <div v-else>
@@ -66,7 +96,8 @@ export default defineComponent({
         You are made an appointment for {{ selectedService }} at the {{ selectedSalon }} at {{ selectedDay }} {{ selectedTime }}
       </p>
 
-      <button @click="closeModal" class="btn btn-success mt">OK</button>
+      <button @click="closeModal" class="btn btn-success">OK</button>
+      <button class="btn btn-danger" @click="closeModal">Close</button>
     </div>
   </div>
 </template>
@@ -93,5 +124,8 @@ export default defineComponent({
   &-text {
     text-align: center;
   }
+}
+.notification {
+  height: 25px;
 }
 </style>
